@@ -7,6 +7,7 @@ module.exports = function(router){
 // nodes
   router.get('/nodes', nodes.index); // GET ALL
   router.get('/nodes/:id', nodes.show); // GET BY ID
+  router.get('/nodes/tag/wheelchair/:value', nodes.showByTagWheelchair); // GET BY TAG
 
 
 //HOME

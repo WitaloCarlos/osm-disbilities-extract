@@ -37,10 +37,14 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods:{
                 associate:function(models){
-                    Node.belongsTo(models.users, { foreignKey: 'user_id'} );
+                    Node.belongsTo(models.users, { foreignKey: 'user_id',  constraints: false} );
                 }
             }
   });
+
+  Node.findAllKeyValue = function(key, value){
+        Nodec
+    }
 
   return Node;
 };
