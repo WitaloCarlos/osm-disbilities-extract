@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ways', {
+  var Way =  sequelize.define('ways', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -24,14 +24,22 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     tags: {
-      type: "HSTORE",
+      type: DataTypes.HSTORE,
       allowNull: true
     },
     nodes: {
-      type: "ARRAY",
+      type: DataTypes.ARRAY(DataTypes.BIGINT),
       allowNull: true
     }
   }, {
-    tableName: 'ways'
+    tableName: 'ways',
+    timestamps: false,
+    classMethods:{
+                associate:function(models){
+                    Way.hasMany(models.way_nodes, { foreignKey:'way_id', constraints: false});
+                }
+            }
   });
+
+  return Way;
 };

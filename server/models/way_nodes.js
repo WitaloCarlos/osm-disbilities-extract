@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('way_nodes', {
+  var WayNodes = sequelize.define('way_nodes', {
     way_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -17,6 +17,16 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    tableName: 'way_nodes'
+    tableName: 'way_nodes',
+    timestamps: false,
+     classMethods:{
+                associate:function(models){
+                  
+                    WayNodes.belongsTo(models.ways, { foreignKey: 'way_id'} );
+                    WayNodes.belongsTo(models.nodes, { foreignKey: 'node_id'} );
+                    
+                }
+            }
   });
+  return WayNodes;
 };

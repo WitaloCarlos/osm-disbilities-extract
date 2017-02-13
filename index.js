@@ -8,14 +8,20 @@ var routes = require('./server/routes/');
 
 var app = express(); // app use express
 
-
-
 var port = process.env.PORT || 9200;
 
 // API ROUTES
 
 var router = express.Router();
 app.use('/api', routes(router));
+app.use(function(req, res, next){
+  console.log('Cors Policy');
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', 'X-Request-With, content-type');
+  res.header('Access-Control-Allow-Methos', 'GET');
+  
+}
+);
 
 // START THE SERVER
 
