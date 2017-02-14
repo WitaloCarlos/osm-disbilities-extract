@@ -36,6 +36,7 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods:{
                 associate:function(models){
+                    Way.belongsTo(models.users, { foreignKey: 'user_id',  constraints: false} );
                     Way.hasMany(models.way_nodes, { foreignKey:'way_id', constraints: false});
                 }
             }

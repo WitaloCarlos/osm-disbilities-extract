@@ -1,6 +1,7 @@
 var Way = require('../models/').ways;
 var WayNode = require('../models/').way_nodes;
 var Node = require('../models/').nodes;
+var User = require('../models/').user;
 var sequelize = require('sequelize');
 
 
@@ -9,8 +10,8 @@ module.exports={
     //Get All
     index(req, res, next){
 
-      Way.findAll({include: User}).then(function(ways){
-        res.status(200).json(ways);
+      Way.findAll({include: [{model: WayNode, include:[{model:Node}]}]}).then(function(nodes){
+        res.status(200).json(nodes);
       })
       .catch(function(error){
 
@@ -60,18 +61,18 @@ module.exports={
     count(req, res,next){
 
         var keyTag = req.params.tag;
-        Way.findAll({attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'count']],
-                     where: {tags:{
+        Way.count({where: {tags:{
                     $contains:{
                         [keyTag]: req.params.value
                     }
                 }            }
-        }).then(function(ways){
+        }).then(function(waysCount){
              console.log('Success on Tag' );
+            var result = {};
+            result.count = waysCount;
 
 
-
-        res.status(200).json(ways);
+        res.status(200).json(result);
       }).catch(function(error){
           console.log(error);
         res.status(500).json(error);
@@ -79,7 +80,7 @@ module.exports={
     next();
     },
 
-    show(req, res){
+    show(req, res, next){
 
       Way.findById(req.params.id, {
            
@@ -89,6 +90,7 @@ module.exports={
           console.log(error);
         res.status(500).json(error);
       });
+      next();
     }
 
     
